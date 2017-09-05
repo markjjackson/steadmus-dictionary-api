@@ -1,16 +1,16 @@
-// Import dependencies
+// ** Import dependencies **
 const express = require('express')
 const mongo = require('mongodb')
 const { constructDbUri } = require('./util/db')
 
-// Import environment variables
+// ** Import environment variables **
 require('dotenv').config()
 const { env } = process
 
-// Create express app
+// ** Create express app **
 const app = express()
 
-// Middleware
+// ** Middleware **
 
 // Configure CORS is desired (included in .env)
 if (env.APP_CORS_ORIGIN && env.APP_CORS_HEADERS) {
@@ -20,12 +20,12 @@ if (env.APP_CORS_ORIGIN && env.APP_CORS_HEADERS) {
   })
 }
 
-// Define routes
+// ** Routes **
 app.get('/', (req, res) => {
   res.send('Studeamus dictionary app')
 })
 
-// Run app
+// ** Run app **
 app.listen(env.APP_PORT, () => {
   console.log(`App listening on port ${env.APP_PORT}`)
 })
