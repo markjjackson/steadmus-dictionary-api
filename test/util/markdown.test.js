@@ -1,7 +1,7 @@
 const assert = require('assert')
-const { transformMarkdown } = require('../util/markdown')
+const { transformMarkdown } = require('../../util/markdown')
 
-describe('Markdown', () => {
+describe('Markdown Utility', () => {
   describe('transformMarkdown', () => {
     it ('should replace all instances of text wrapped in ** markdown with <strong/> tags', () => {
       assert.equal('This is some <strong>test text</strong>.', transformMarkdown('This is some **test text**.'))
@@ -17,6 +17,9 @@ describe('Markdown', () => {
     })
     it ('should be able to handle multiple markdown tags in a single string', () => {
       assert.equal('<span style="text-decoration: underline;">This</span> <strong>is some</strong> <em>test text</em>.', transformMarkdown('__This__ **is some** *test text*.'))
+    })
+    it ('should remove any script tags so that no unsafe JavaScript can be injected into the string', () => {
+      assert.equal('This is some test text.', transformMarkdown('This is some test <script>console.log("test")</script>text.'))
     })
   })
 })
