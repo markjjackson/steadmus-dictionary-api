@@ -1,7 +1,7 @@
 // ** Import dependencies **
 const express = require('express')
-const mongo = require('mongodb')
-const { constructDbUri } = require('./util/db')
+const { MongoClient } = require('mongodb')
+const { constructMongoUri } = require('./util/db')
 
 // ** Import environment variables **
 require('dotenv').config()
@@ -22,7 +22,21 @@ if (env.APP_CORS_ORIGIN && env.APP_CORS_HEADERS) {
 
 // ** Routes **
 app.get('/', (req, res) => {
-  res.send('Studeamus dictionary app')
+  res.send('Studeamus dictionary app API')
+})
+
+app.get('/word', (req, res) => {
+  const { query } = req
+  const searchTerm = query.q
+
+  MongoClient.connect(constructMongoUri(env), (err, db) => {
+    db.collection('words')
+      .find({ latin: new RegExp(`^${query.q}.*`) })
+      .toArray((err, items) => {
+        err ? console.log(err) : res.send(items)
+        db.close()
+      })
+  })
 })
 
 // ** Run app **
