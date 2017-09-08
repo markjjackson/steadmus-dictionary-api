@@ -17,6 +17,7 @@ if (env.APP_CORS_ORIGIN && env.APP_CORS_HEADERS) {
   app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', env.APP_CORS_ORIGIN)
     res.header("Access-Control-Allow-Headers", env.APP_CORS_HEADERS)
+    next()
   })
 }
 
